@@ -1,0 +1,245 @@
+/**
+ * InfinityFlow - Custom Styles
+ * =============================
+ * Estilos customizados para complementar o Tailwind CSS
+ * Inclui efeitos de glassmorphism, animações e gradientes
+ */
+
+/* ==================== RESET E CONFIGURAÇÕES GLOBAIS ==================== */
+* {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* ==================== GLASSMORPHISM EFFECTS ==================== */
+.glass {
+    background: rgba(18, 18, 18, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(18, 18, 18, 0.9));
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.15);
+}
+
+.glass-card:hover {
+    border-color: rgba(220, 38, 38, 0.4);
+    box-shadow: 0 12px 40px 0 rgba(220, 38, 38, 0.25);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+/* ==================== GRADIENT BACKGROUNDS ==================== */
+.gradient-primary {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+}
+
+.gradient-hero {
+    background: radial-gradient(ellipse at center, rgba(220, 38, 38, 0.15) 0%, rgba(0, 0, 0, 0) 70%),
+                linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(220, 38, 38, 0.6);
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+    animation: slideInFromBottom 0.6s ease-out;
+}
+
+/* ==================== BUTTON STYLES ==================== */
+.btn-primary {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    box-shadow: 0 6px 25px rgba(220, 38, 38, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(220, 38, 38, 0.4);
+}
+
+/* ==================== FORM STYLES ==================== */
+.input-field {
+    background: rgba(18, 18, 18, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    outline: none;
+}
+
+.input-field:hover {
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+/* ==================== NAVBAR STYLES ==================== */
+.navbar-blur {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* ==================== ACCORDION STYLES ==================== */
+.accordion-button {
+    transition: all 0.3s ease;
+}
+
+.accordion-button:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+}
+
+.accordion-content.active {
+    max-height: 500px;
+}
+
+/* ==================== FLOATING WHATSAPP BUTTON ==================== */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 30px rgba(37, 211, 102, 0.7);
+}
+
+/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 24px;
+    }
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+.section-spacer {
+    padding: 5rem 0;
+}
+
+@media (max-width: 768px) {
+    .section-spacer {
+        padding: 3rem 0;
+    }
+}
+
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #dc2626 50%, transparent 100%);
+    margin: 3rem 0;
+}
+
+/* ==================== SCROLL ANIMATIONS ==================== */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================== CUSTOM SCROLLBAR ==================== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+}
