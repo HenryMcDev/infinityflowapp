@@ -273,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </li>
                         <li class="flex items-start gap-2">
                             <i data-lucide="check-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
-                            <span class="text-gray-300">Disparo de mensagens em massa</span>
+                            <span class="text-gray-300">Mensagens personalizadas do seu jeito</span>
                         </li>
                     </ul>
                     <a href="#contact" class="btn-primary px-6 py-3 rounded-full font-semibold inline-block">
@@ -728,11 +728,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="mail" class="w-4 h-4 text-red-500"></i>
-                            contato@infinityflow.com.br
+                            henryoficial37@gmail.com
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="phone" class="w-4 h-4 text-red-500"></i>
-                            (34) 9999-9999
+                            (34) 999548090
                         </li>
                     </ul>
                 </div>
@@ -763,7 +763,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/5534999999999?text=Olá! Gostaria de saber mais sobre automação de WhatsApp" 
+    <a href="https://wa.me/5534999548090?text=Olá! Gostaria de saber mais sobre automação de WhatsApp" 
        target="_blank" 
        class="whatsapp-float"
        aria-label="Entre em contato pelo WhatsApp">
@@ -884,3 +884,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
+
