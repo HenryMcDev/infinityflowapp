@@ -55,16 +55,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Se a requisição vier via JavaScript (AJAX), responde apenas com JSON
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-        header('Content-Type: application/json');
-        if ($http_code >= 200 && $http_code < 300) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Erro no servidor de automação.']);
-        }
-        exit;
+    header('Content-Type: application/json');
+    if ($http_code >= 200 && $http_code < 300) {
+        echo json_encode(['success' => true]);
+    } else {
+        // Isso vai nos dizer o código HTTP e o erro do cURL no console do navegador
+        $curl_error = curl_error($ch);
+        echo json_encode([
+            'success' => false, 
+            'error' => "Erro HTTP: $http_code | cURL Error: $curl_error"
+        ]);
     }
+    exit;
+}   
+    // Se a requisição vier via JavaScript (AJAX), responde apenas com JSON
+    //if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    //    header('Content-Type: application/json');
+    //    if ($http_code >= 200 && $http_code < 300) {
+    //        echo json_encode(['success' => true]);
+    //    } else {
+    //       echo json_encode(['success' => false, 'error' => 'Erro no servidor de automação.']);
+    //    }
+    //    exit;
+    //}
 }
 ?>
 <!DOCTYPE html>
@@ -894,6 +908,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
+
 
 
 
