@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // URL DO SEU WEBHOOK N8N (Escondida do usuário final por segurança)
     // Lembre-se: quando ativar o workflow, troque "/webhook-test/" por "/webhook/"
-    $webhook_url = 'https://n8n.infinityflowapp.com/webhook/infinityflowapp-website';
+    $webhook_url = 'https://n8n.infinityflowapp.com/webhook-test/infinityflowapp-website';
 
     // Prepara o pacote de dados para o n8n
     $payload = json_encode([
@@ -894,6 +894,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
+
 
 
 
