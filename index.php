@@ -1,4 +1,10 @@
 <?php
+
+// Redirecionamento de non-www para www
+if ($_SERVER['HTTP_HOST'] === 'infinityflowapp.com') {
+    header("Location: https://www.infinityflowapp.com" . $_SERVER['REQUEST_URI'], true, 301);
+    exit;
+}
 /**
  * InfinityFlow - Landing Page (Versão Híbrida com n8n)
  * ===================================================
@@ -884,4 +890,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
+
 
