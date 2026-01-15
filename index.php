@@ -1,19 +1,13 @@
 <?php
 /**
- * InfinityFlow - Landing Page
- * ===========================
- * Site institucional da InfinityFlow - Automação de WhatsApp
- * 
- * @author InfinityFlow Team
- * @version 1.0.0
+ * InfinityFlow - Landing Page (Versão Híbrida com n8n)
+ * ===================================================
  */
 
-// Processamento do formulário
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
-    // Incluir conexão com banco de dados
-    // require_once 'config/db.php';
+// 1. BLOCO DE PROCESSAMENTO (O "Pai" da Automação)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Sanitização dos dados
+    // Coleta e limpeza dos dados
     $nome = htmlspecialchars(trim($_POST['nome'] ?? ''));
     $cidade = htmlspecialchars(trim($_POST['cidade'] ?? ''));
     $uf = htmlspecialchars(trim($_POST['uf'] ?? ''));
@@ -22,40 +16,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
     $volume_mensagens = htmlspecialchars(trim($_POST['volume_mensagens'] ?? ''));
     $descricao = htmlspecialchars(trim($_POST['descricao'] ?? ''));
     $data_visita = htmlspecialchars(trim($_POST['data_visita'] ?? ''));
+
+    // URL DO SEU WEBHOOK N8N (Escondida do usuário final por segurança)
+    // Lembre-se: quando ativar o workflow, troque "/webhook-test/" por "/webhook/"
+    $webhook_url = 'https://adminn8n.infinityflowapp.com/webhook-test/cb3fd2b5-c0e1-4491-9916-f161bcf087b2';
+
+    // Prepara o pacote de dados para o n8n
+    $payload = json_encode([
+        'nome' => $nome,
+        'cidade' => $cidade,
+        'uf' => $uf,
+        'email' => $email,
+        'whatsapp' => $whatsapp,
+        'volume_mensagens' => $volume_mensagens,
+        'descricao' => $descricao,
+        'data_visita' => $data_visita,
+        'origem' => 'Site Oficial InfinityFlow'
+    ]);
+
+    // Envia os dados para o n8n via cURL
+    $ch = curl_init($webhook_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     
-    // Validação básica
-    $errors = [];
-    
-    if (empty($nome)) $errors[] = "Nome é obrigatório";
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email válido é obrigatório";
-    if (empty($whatsapp)) $errors[] = "WhatsApp é obrigatório";
-    
-    if (empty($errors)) {
-        // Aqui você pode inserir no banco de dados
-        /*
-        try {
-            $sql = "INSERT INTO agendamentos (nome, cidade, uf, email, whatsapp, volume_mensagens, descricao, data_visita, created_at) 
-                    VALUES (:nome, :cidade, :uf, :email, :whatsapp, :volume_mensagens, :descricao, :data_visita, NOW())";
-            
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                ':nome' => $nome,
-                ':cidade' => $cidade,
-                ':uf' => $uf,
-                ':email' => $email,
-                ':whatsapp' => $whatsapp,
-                ':volume_mensagens' => $volume_mensagens,
-                ':descricao' => $descricao,
-                ':data_visita' => $data_visita
-            ]);
-            
-            $success_message = "Agendamento realizado com sucesso! Entraremos em contato em breve.";
-        } catch (PDOException $e) {
-            $errors[] = "Erro ao processar agendamento. Tente novamente.";
+    $result = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Se a requisição vier via JavaScript (AJAX), responde apenas com JSON
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        if ($http_code >= 200 && $http_code < 300) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Erro no servidor de automação.']);
         }
-        */
-        
-        $success_message = "Formulário enviado com sucesso! (Banco de dados ainda não configurado)";
+        exit;
     }
 }
 ?>
@@ -275,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                         </li>
                         <li class="flex items-start gap-2">
                             <i data-lucide="check-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
-                            <span class="text-gray-300">Mensagens Personalizadas do seu jeito</span>
+                            <span class="text-gray-300">Disparo de mensagens em massa</span>
                         </li>
                     </ul>
                     <a href="#contact" class="btn-primary px-6 py-3 rounded-full font-semibold inline-block">
@@ -574,7 +572,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                 <?php endif; ?>
                 
                 <!-- Contact Form -->
-                <form method="POST" action="#contact" class="glass-card rounded-3xl p-8" data-aos="fade-up">
+                <form id="infinityForm" class="glass-card rounded-3xl p-8" data-aos="fade-up">
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <!-- Nome -->
                         <div>
@@ -586,10 +584,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                         
                         <!-- Cidade -->
                         <div>
-                            <label for="cidade" class="block text-sm font-semibold mb-2">Cidade</label>
-                            <input type="text" id="cidade" name="cidade" 
-                                   class="input-field w-full px-4 py-3 rounded-xl text-white"
-                                   placeholder="Sua cidade">
+                            <label class="block text-sm font-semibold mb-2">Cidade</label>
+                            <input type="text" name="cidade" class="input-field w-full px-4 py-3 rounded-xl text-white" placeholder="Sua cidade">
                         </div>
                         
                         <!-- UF -->
@@ -598,15 +594,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                             <select id="uf" name="uf" 
                                     class="input-field w-full px-4 py-3 rounded-xl text-white">
                                 <option value="">Selecione</option>
-                                <option value="MG">MG</option>
-                                <option value="SP">SP</option>
-                                <option value="RJ">RJ</option>
-                                <option value="ES">ES</option>
-                                <option value="BA">BA</option>
-                                <option value="PR">PR</option>
-                                <option value="SC">SC</option>
-                                <option value="RS">RS</option>
-                                <!-- Adicione outros estados conforme necessário -->
+                                <option value="AC">AC - Acre</option>
+                                <option value="AL">AL - Alagoas</option>
+                                <option value="AP">AP - Amapá</option>
+                                <option value="AM">AM - Amazonas</option>
+                                <option value="BA">BA - Bahia</option>
+                                <option value="CE">CE - Ceará</option>
+                                <option value="DF">DF - Distrito Federal</option>
+                                <option value="ES">ES - Espírito Santo</option>
+                                <option value="GO">GO - Goiás</option>
+                                <option value="MA">MA - Maranhão</option>
+                                <option value="MT">MT - Mato Grosso</option>
+                                <option value="MS">MS - Mato Grosso do Sul</option>
+                                <option value="MG">MG - Minas Gerais</option>
+                                <option value="PA">PA - Pará</option>
+                                <option value="PB">PB - Paraíba</option>
+                                <option value="PR">PR - Paraná</option>
+                                <option value="PE">PE - Pernambuco</option>
+                                <option value="PI">PI - Piauí</option>
+                                <option value="RJ">RJ - Rio de Janeiro</option>
+                                <option value="RN">RN - Rio Grande do Norte</option>
+                                <option value="RS">RS - Rio Grande do Sul</option>
+                                <option value="RO">RO - Rondônia</option>
+                                <option value="RR">RR - Roraima</option>
+                                <option value="SC">SC - Santa Catarina</option>
+                                <option value="SP">SP - São Paulo</option>
+                                <option value="SE">SE - Sergipe</option>
+                                <option value="TO">TO - Tocantins</option>
                             </select>
                         </div>
                         
@@ -656,10 +670,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                     </div>
                     
                     <!-- Submit Button -->
-                    <button type="submit" name="submit_contact" 
-                            class="btn-primary w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+                    <button type="submit" id="submitBtn" class="btn-primary w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all">
                         <i data-lucide="send" class="w-5 h-5"></i>
-                        Agendar Reunião com o Flow
+                        <span id="btnText">Agendar Reunião com o Flow</span>
                     </button>
                 </form>
             </div>
@@ -715,11 +728,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="mail" class="w-4 h-4 text-red-500"></i>
-                            henryoficial37@gmail.com
+                            contato@infinityflow.com.br
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="phone" class="w-4 h-4 text-red-500"></i>
-                            (34) 99954-8090
+                            (34) 9999-9999
                         </li>
                     </ul>
                 </div>
@@ -750,7 +763,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/5534999548090?text=Olá! Gostaria de saber mais sobre automação de WhatsApp" 
+    <a href="https://wa.me/5534999999999?text=Olá! Gostaria de saber mais sobre automação de WhatsApp" 
        target="_blank" 
        class="whatsapp-float"
        aria-label="Entre em contato pelo WhatsApp">
@@ -825,30 +838,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {
             }
         });
         
-        // Form validation
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                const nome = document.getElementById('nome').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const whatsapp = document.getElementById('whatsapp').value.trim();
+        // 2. LÓGICA DE ENVIO MODERNA (JavaScript)
+        const form = document.getElementById('infinityForm');
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+
+        if (form && btn && btnText) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 
-                if (!nome || !email || !whatsapp) {
-                    alert('Por favor, preencha todos os campos obrigatórios.');
-                    e.preventDefault();
-                    return false;
-                }
+                // Estado de carregamento
+                btn.disabled = true;
+                btnText.innerText = "Enviando dados ao Flow...";
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                const formData = new FormData(form);
                 
-                // Email validation
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    alert('Por favor, insira um e-mail válido.');
-                    e.preventDefault();
-                    return false;
+                try {
+                    // Envia os dados para este mesmo arquivo PHP
+                    const response = await fetch('index.php', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest' // Avisa o PHP que é AJAX
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert('🚀 Sucesso! O Flow recebeu sua mensagem e o n8n já iniciou o processo de automação.');
+                        form.reset();
+                    } else {
+                        alert('❌ Ops! O servidor PHP não conseguiu falar com o n8n. Verifique o link do webhook.');
+                    }
+                } catch (error) {
+                    alert('⚠️ Falha crítica: Verifique se sua VPS está online ou se o PHP cURL está ativado.');
+                } finally {
+                    btn.disabled = false;
+                    btnText.innerText = "Agendar Reunião com o Flow";
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
             });
         }
     </script>
 </body>
 </html>
-
