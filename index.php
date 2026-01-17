@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>InfinityFlow | Automação Inteligente de Atendimento</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="Imagens/Logo.png">
-    <link rel="shortcut icon" type="image/png" href="Imagens/Logo.png">
+    <link rel="icon" type="image/png" href="Imagens/Logo1.png">
+    <link rel="shortcut icon" type="image/png" href="Imagens/Logo1.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center justify-between h-20">
                 <div class="flex items-center space-x-2">
                     <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center animate-pulse-glow p-1.5">
-                        <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
+                        <img src="Imagens/Logo1.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                     </div>
                     <span class="text-2xl font-bold gradient-text">InfinityFlow</span>
                 </div>
@@ -759,7 +759,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
                         <div class="w-8 h-8 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center p-1">
-                            <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
+                            <img src="Imagens/Logo1.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                         </div>
                         <span class="text-xl font-bold gradient-text">InfinityFlow</span>
                     </div>
@@ -866,3 +866,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
+
