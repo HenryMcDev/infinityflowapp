@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>InfinityFlow | Automação Inteligente de Atendimento</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="Imagens/Logo1.png">
-    <link rel="shortcut icon" type="image/png" href="Imagens/Logo1.png">
+    <link rel="icon" type="image/png" href="Imagens/Logo.png">
+    <link rel="shortcut icon" type="image/png" href="Imagens/Logo.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center justify-between h-20">
                 <div class="flex items-center space-x-2">
                     <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center animate-pulse-glow p-1.5">
-                        <img src="Imagens/Logo1.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
+                        <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                     </div>
                     <span class="text-2xl font-bold gradient-text">InfinityFlow</span>
                 </div>
@@ -131,10 +131,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="#home" class="hover:text-red-500 transition-colors duration-300">Início</a>
                     <a href="#about" class="hover:text-red-500 transition-colors duration-300">Sobre</a>
                     <a href="#services" class="hover:text-red-500 transition-colors duration-300">Serviços</a>
+                    <a href="#pricing" class="hover:text-red-500 transition-colors duration-300">Planos</a>
                     <a href="#benefits" class="hover:text-red-500 transition-colors duration-300">Diferenciais</a>
                     <a href="#faq" class="hover:text-red-500 transition-colors duration-300">FAQ</a>
                     <a href="#contact" class="hover:text-red-500 transition-colors duration-300">Contato</a>
-                    <a href="#infinityflow" class="hover:text-red-500 transition-colors duration-300">InfinityFlow</a>
                 </div>
                 
                 <a href="#contact" class="hidden md:block btn-primary px-6 py-3 rounded-full font-semibold text-white">
@@ -152,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="#home" class="block py-2 hover:text-red-500 transition-colors">Início</a>
                 <a href="#about" class="block py-2 hover:text-red-500 transition-colors">Sobre</a>
                 <a href="#services" class="block py-2 hover:text-red-500 transition-colors">Serviços</a>
+                <a href="#pricing" class="block py-2 hover:text-red-500 transition-colors">Planos</a>
                 <a href="#benefits" class="block py-2 hover:text-red-500 transition-colors">Diferenciais</a>
                 <a href="#faq" class="block py-2 hover:text-red-500 transition-colors">FAQ</a>
                 <a href="#contact" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold">Consultoria Gratuita</a>
@@ -287,6 +288,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="glass-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="500">
                     <button class="accordion-button w-full text-left p-6 flex items-center justify-between" onclick="toggleAccordion(this)">
+                        <h3 class="text-lg font-semibold pr-4">Posso remover a marca da InfinityFlow das mensagens?</h3>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-red-500 flex-shrink-0 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-0">
+                        <p class="text-gray-300 pb-6">
+                            Sim! No <strong>Plano Infinity Premium</strong>, sua assistente é 100% personalizada com o nome e a marca da sua empresa, sem qualquer menção à nossa plataforma (White Label). Você terá controle total sobre a identidade visual, incluindo nome customizado, foto de perfil com sua logo e zero assinaturas "Powered by InfinityFlow" nas mensagens. Ideal para empresas que desejam oferecer a tecnologia como se fosse 100% própria.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="600">
+                    <button class="accordion-button w-full text-left p-6 flex items-center justify-between" onclick="toggleAccordion(this)">
                         <h3 class="text-lg font-semibold pr-4">Qual é o principal ganho ao contratar a automação?</h3>
                         <i data-lucide="chevron-down" class="w-5 h-5 text-red-500 flex-shrink-0 transition-transform duration-300"></i>
                     </button>
@@ -340,6 +353,245 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <h3 class="text-xl font-bold mb-3">Escalabilidade</h3>
                     <p class="text-gray-300 text-sm">Seu sistema pronto para crescer junto com seu volume de vendas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="section-spacer gradient-primary">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Nossos <span class="gradient-text">Planos</span>
+                </h2>
+                <p class="text-xl text-gray-300">Escolha a solução ideal para o seu negócio</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
+                <!-- PLANO FLOW (Básico) -->
+                <div class="glass-card rounded-3xl p-8 relative" data-aos="fade-up" data-aos-delay="100">
+                    <div class="inline-block px-4 py-1 bg-red-600/20 rounded-full text-sm font-semibold mb-6">
+                        Básico
+                    </div>
+                    <h3 class="text-3xl font-bold mb-2">Plano Flow</h3>
+                    <p class="text-gray-400 mb-6">Para pequenos negócios e autônomos</p>
+                    
+                    <div class="bg-red-600/10 border border-red-600/30 rounded-xl p-4 mb-8">
+                        <p class="text-lg font-semibold text-red-400">💡 O poder da IA acessível para todos</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="bot" class="w-5 h-5 text-red-500 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong>Assistente Virtual "Flow"</strong>
+                                <p class="text-sm text-gray-400">Identidade padrão da InfinityFlow</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="message-square" class="w-5 h-5 text-red-500 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong>Assinatura "Powered by InfinityFlow"</strong>
+                                <p class="text-sm text-gray-400">Em todas as mensagens enviadas</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="table" class="w-5 h-5 text-red-500 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong>Integração com Google Sheets</strong>
+                                <p class="text-sm text-gray-400">Sincronização de dados em tempo real</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-red-500 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong>Suporte via Ticket/E-mail</strong>
+                                <p class="text-sm text-gray-400">Resposta em até 24h úteis</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <a href="#contact" class="btn-primary block text-center px-6 py-4 rounded-xl font-semibold text-lg">
+                        Começar agora
+                    </a>
+                </div>
+                
+                <!-- INFINITY PREMIUM (Destaque) -->
+                <div class="glass-card rounded-3xl p-8 relative border-2 border-red-600 animate-pulse-glow" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-red-600 to-red-800 px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                        ⭐ Mais Popular
+                    </div>
+                    
+                    <div class="inline-block px-4 py-1 bg-red-600 rounded-full text-sm font-semibold mb-6 mt-4">
+                        Premium • White Label
+                    </div>
+                    <h3 class="text-3xl font-bold mb-2 gradient-text">Infinity Premium</h3>
+                    <p class="text-gray-300 mb-6">Para empresas que buscam exclusividade e escala</p>
+                    
+                    <div class="bg-gradient-to-r from-red-600/20 to-red-800/20 border border-red-600/50 rounded-xl p-4 mb-8">
+                        <p class="text-lg font-semibold text-red-300">🎯 Sua marca, nossa tecnologia</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-red-400 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong class="text-red-300">IA com Nome e Personalidade 100% personalizada</strong>
+                                <p class="text-sm text-gray-400">Totalmente adaptada à identidade da sua marca</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="shield-off" class="w-5 h-5 text-red-400 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong class="text-red-300">Sem assinaturas ou marcas da InfinityFlow</strong>
+                                <p class="text-sm text-gray-400">Marca Branca total (White Label)</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="database" class="w-5 h-5 text-red-400 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong class="text-red-300">Integração com Sistemas</strong>
+                                <p class="text-sm text-gray-400">ERP, Agendas, Controle de Estoque e mais</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-red-400 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong class="text-red-300">Dashboard de Métricas em Tempo Real</strong>
+                                <p class="text-sm text-gray-400">Acompanhe performance e conversões</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="headphones" class="w-5 h-5 text-red-400 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong class="text-red-300">Suporte VIP via WhatsApp</strong>
+                                <p class="text-sm text-gray-400">Atendimento prioritário e personalizado</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <a href="#contact" class="btn-primary block text-center px-6 py-4 rounded-xl font-semibold text-lg shadow-2xl">
+                        Falar com Consultor
+                    </a>
+                </div>
+            </div>
+            
+            <!-- TABELA COMPARATIVA -->
+            <div class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-2xl font-bold text-center mb-8">
+                    Comparativo de <span class="gradient-text">Transparência</span>
+                </h3>
+                
+                <div class="glass-card rounded-2xl overflow-hidden hidden md:block">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-red-600/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left font-semibold">Características</th>
+                                    <th class="px-6 py-4 text-center font-semibold">Plano Flow</th>
+                                    <th class="px-6 py-4 text-center font-semibold">Infinity Premium</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800">
+                                <tr class="hover:bg-red-600/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="user" class="w-4 h-4 text-red-500"></i>
+                                            <strong>Identidade da IA</strong>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-gray-400">
+                                        "Flow" (Padrão)
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-red-300 font-semibold">
+                                        100% Personalizada
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-red-600/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="message-circle" class="w-4 h-4 text-red-500"></i>
+                                            <strong>Assinatura WhatsApp</strong>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-gray-400">
+                                        "Powered by InfinityFlow"
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-red-300 font-semibold">
+                                        Sem Assinatura
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-red-600/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="image" class="w-4 h-4 text-red-500"></i>
+                                            <strong>Foto de Perfil</strong>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-gray-400">
+                                        Logo Flow (Padrão)
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-red-300 font-semibold">
+                                        Sua Logo
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Versão Mobile (lista) -->
+                <div class="md:hidden space-y-4">
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i data-lucide="user" class="w-5 h-5 text-red-500"></i>
+                            <h4 class="font-bold">Identidade da IA</h4>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Plano Flow:</span>
+                                <span class="text-sm">"Flow" (Padrão)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Infinity Premium:</span>
+                                <span class="text-sm text-red-300 font-semibold">100% Personalizada</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-red-500"></i>
+                            <h4 class="font-bold">Assinatura WhatsApp</h4>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Plano Flow:</span>
+                                <span class="text-sm">"Powered by..."</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Infinity Premium:</span>
+                                <span class="text-sm text-red-300 font-semibold">Sem Assinatura</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i data-lucide="image" class="w-5 h-5 text-red-500"></i>
+                            <h4 class="font-bold">Foto de Perfil</h4>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Plano Flow:</span>
+                                <span class="text-sm">Logo Flow</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Infinity Premium:</span>
+                                <span class="text-sm text-red-300 font-semibold">Sua Logo</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -507,7 +759,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
                         <div class="w-8 h-8 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center p-1">
-                            <img src="Imagens/Logo1.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
+                            <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                         </div>
                         <span class="text-xl font-bold gradient-text">InfinityFlow</span>
                     </div>
@@ -598,7 +850,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     });
                     const result = await response.json();
                     if (result.success) {
-                        alert('🚀 Dados enviados! O Flow já está processando sua solicitação e o n8n iniciou o fluxo. Entraremos em contato em breve.');
+                        alert('🚀 Dados enviados! O Flow já está processando sua solicitação. Entraremos em contato em breve.');
                         form.reset();
                     } else {
                         alert('❌ Erro ao entrar em contato com o Flow. Por favor, tente pelo botão do WhatsApp.');
@@ -614,4 +866,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
-
