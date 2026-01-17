@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="author" content="InfinityFlow">
     
     <title>InfinityFlow | Automação Inteligente de Atendimento</title>
-
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="Imagens/Logo.png">
     <link rel="shortcut icon" type="image/png" href="Imagens/Logo.png">
@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="navbar-blur fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-2">
                     <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center animate-pulse-glow p-1.5">
                         <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                     </div>
@@ -612,5 +613,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </script>
 </body>
-
 </html>
