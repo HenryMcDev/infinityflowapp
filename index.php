@@ -809,7 +809,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 
-    <a href="https://wa.me/5534999548090?text=Olá! Vim pelo site e gostaria de um orçamento para automação." 
+    <a href="https://wpp.infinityflowapp.com/5534988780557?text=Olá! Vim pelo site e gostaria de um orçamento para automação." 
        target="_blank" 
        class="whatsapp-float"
        aria-label="Entre em contato pelo WhatsApp">
