@@ -145,25 +145,47 @@ try {
             <!-- Navigation Menu -->
             <nav class="flex-1 py-8 px-4 overflow-y-auto">
                 <div class="space-y-2">
-                    <a href="dashboard.php" class="nav-item group flex items-center gap-4 px-5 py-4 text-white bg-[#C71A1D]/10 rounded-xl border-l-2 border-[#C71A1D]">
+                    <a href="#" onclick="showPortal('dashboard'); return false;" id="link-dashboard" class="nav-item group flex items-center gap-4 px-5 py-4 text-white bg-[#C71A1D]/10 rounded-xl border-l-2 border-[#C71A1D]">
                         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                         <span class="font-medium tracking-wide">Dashboard</span>
                     </a>
                     
-                    <a href="automacoes.php" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
-                        <i data-lucide="workflow" class="w-5 h-5"></i>
-                        <span class="font-medium tracking-wide">Automações</span>
+                    <!-- Divider -->
+                    <div class="py-2">
+                        <div class="border-b border-white/10"></div>
+                        <p class="text-white/40 text-xs uppercase tracking-wider font-semibold px-5 py-3">Portais de Acesso</p>
+                    </div>
+                    
+                    <a href="#" onclick="showPortal('n8n'); return false;" id="link-n8n" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
+                        <i data-lucide="network" class="w-5 h-5"></i>
+                        <span class="font-medium tracking-wide">n8n Automation</span>
                     </a>
                     
-                    <a href="mensagens.php" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
-                        <i data-lucide="message-square" class="w-5 h-5"></i>
-                        <span class="font-medium tracking-wide">Mensagens</span>
+                    <a href="#" onclick="showPortal('easypanel'); return false;" id="link-easypanel" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
+                        <i data-lucide="server" class="w-5 h-5"></i>
+                        <span class="font-medium tracking-wide">Easypanel</span>
                     </a>
                     
-                    <a href="banco_dados.php" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
-                        <i data-lucide="database" class="w-5 h-5"></i>
-                        <span class="font-medium tracking-wide">Banco de Dados</span>
+                    <a href="#" onclick="showPortal('minio'); return false;" id="link-minio" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
+                        <i data-lucide="hard-drive" class="w-5 h-5"></i>
+                        <span class="font-medium tracking-wide">Minio Storage</span>
                     </a>
+                    
+                    <a href="#" onclick="showPortal('evolution'); return false;" id="link-evolution" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
+                        <i data-lucide="smartphone" class="w-5 h-5"></i>
+                        <span class="font-medium tracking-wide">Evolution API</span>
+                    </a>
+                    
+                    <a href="#" onclick="showPortal('site'); return false;" id="link-site" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                        <span class="font-medium tracking-wide">InfinityFlow Site</span>
+                    </a>
+                    
+                    <!-- Divider -->
+                    <div class="py-2">
+                        <div class="border-b border-white/10"></div>
+                        <p class="text-white/40 text-xs uppercase tracking-wider font-semibold px-5 py-3">Administração</p>
+                    </div>
                     
                     <a href="administradores.php" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 border-l-2 border-transparent hover:border-[#C71A1D]">
                         <i data-lucide="users" class="w-5 h-5"></i>
@@ -182,144 +204,228 @@ try {
         </aside>
         
         <!-- Main Content -->
-        <main class="flex-1 ml-80 p-12">
-            <!-- Welcome Section -->
-            <div class="mb-12">
-                <h1 class="text-4xl font-bold text-white mb-2">
-                    Bem-vindo, <?= htmlspecialchars($username) ?>! 👋
-                </h1>
-                <p class="text-white/50 text-lg">
-                    Aqui está um resumo da sua área administrativa
-                </p>
-            </div>
+        <main class="flex-1 ml-80 p-12" id="mainContent">
             
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <!-- Card 1: Usuários Ativos -->
-                <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
-                            <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
-                        </div>
-                        <?php if ($total_usuarios > 0): ?>
-                            <span class="text-green-400 text-sm font-medium">Ativo</span>
-                        <?php endif; ?>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($total_usuarios, 0, ',', '.') ?></h3>
-                    <p class="text-white/50 text-sm">Usuários Cadastrados</p>
+            <!-- Dashboard Content (Default) -->
+            <div id="content-dashboard">
+                <!-- Welcome Section -->
+                <div class="mb-12">
+                    <h1 class="text-4xl font-bold text-white mb-2">
+                        Bem-vindo, <?= htmlspecialchars($username) ?>! 👋
+                    </h1>
+                    <p class="text-white/50 text-lg">
+                        Aqui está um resumo da sua área administrativa
+                    </p>
                 </div>
                 
-                <!-- Card 2: Mensagens Enviadas -->
-                <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
-                            <i data-lucide="message-square" class="w-6 h-6 text-purple-400"></i>
-                        </div>
-                        <?php if ($total_mensagens > 0): ?>
-                            <span class="text-green-400 text-sm font-medium">Ativo</span>
-                        <?php endif; ?>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($total_mensagens, 0, ',', '.') ?></h3>
-                    <p class="text-white/50 text-sm">Mensagens Enviadas</p>
-                </div>
-                
-                <!-- Card 3: Automações Ativas -->
-                <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-[#C71A1D]/10 rounded-xl flex items-center justify-center">
-                            <i data-lucide="workflow" class="w-6 h-6 text-[#C71A1D]"></i>
-                        </div>
-                        <?php if ($total_automacoes > 0): ?>
-                            <span class="text-green-400 text-sm font-medium">Ativo</span>
-                        <?php endif; ?>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($total_automacoes, 0, ',', '.') ?></h3>
-                    <p class="text-white/50 text-sm">Automações Ativas</p>
-                </div>
-                
-                <!-- Card 4: Taxa de Sucesso -->
-                <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
-                            <i data-lucide="trending-up" class="w-6 h-6 text-green-400"></i>
-                        </div>
-                        <?php if ($taxa_sucesso >= 90): ?>
-                            <span class="text-green-400 text-sm font-medium">Excelente</span>
-                        <?php elseif ($taxa_sucesso >= 70): ?>
-                            <span class="text-yellow-400 text-sm font-medium">Bom</span>
-                        <?php endif; ?>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($taxa_sucesso, 1, ',', '.') ?>%</h3>
-                    <p class="text-white/50 text-sm">Taxa de Entrega</p>
-                </div>
-            </div>
-            
-            <!-- Recent Activity -->
-            <div class="glass border border-white/10 rounded-2xl p-8">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <i data-lucide="activity" class="w-6 h-6 text-[#C71A1D]"></i>
-                    Atividade Recente
-                </h2>
-                
-                <?php if (empty($mensagens_recentes)): ?>
-                    <!-- Mensagem quando não há dados -->
-                    <div class="text-center py-12">
-                        <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="inbox" class="w-8 h-8 text-white/30"></i>
-                        </div>
-                        <p class="text-white/50 text-lg mb-2">Nenhuma mensagem ainda</p>
-                        <p class="text-white/30 text-sm">As mensagens enviadas aparecerão aqui</p>
-                    </div>
-                <?php else: ?>
-                    <!-- Lista de mensagens recentes -->
-                    <div class="space-y-4">
-                        <?php foreach ($mensagens_recentes as $msg): ?>
-                            <div class="flex items-center gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300">
-                                <div class="w-10 h-10 bg-<?= $msg['status'] === 'lida' ? 'green' : ($msg['status'] === 'entregue' ? 'blue' : 'gray') ?>-500/10 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i data-lucide="message-circle" class="w-5 h-5 text-<?= $msg['status'] === 'lida' ? 'green' : ($msg['status'] === 'entregue' ? 'blue' : 'gray') ?>-400"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <p class="text-white font-medium text-sm truncate"><?= htmlspecialchars($msg['destinatario']) ?></p>
-                                        <span class="text-white/40 text-xs ml-2 flex-shrink-0"><?= date('d/m H:i', strtotime($msg['data_envio'])) ?></span>
-                                    </div>
-                                    <p class="text-white/50 text-sm truncate"><?= htmlspecialchars(substr($msg['conteudo'], 0, 50)) ?><?= strlen($msg['conteudo']) > 50 ? '...' : '' ?></p>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                        <?php
-                                        switch($msg['status']) {
-                                            case 'lida':
-                                                echo 'bg-green-500/10 text-green-400';
-                                                break;
-                                            case 'entregue':
-                                                echo 'bg-blue-500/10 text-blue-400';
-                                                break;
-                                            case 'enviada':
-                                                echo 'bg-purple-500/10 text-purple-400';
-                                                break;
-                                            default:
-                                                echo 'bg-gray-500/10 text-gray-400';
-                                        }
-                                        ?>">
-                                        <?= ucfirst($msg['status']) ?>
-                                    </span>
-                                </div>
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <!-- Card 1: Usuários Ativos -->
+                    <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                                <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
                             </div>
-                        <?php endforeach; ?>
+                            <?php if ($total_usuarios > 0): ?>
+                                <span class="text-green-400 text-sm font-medium">Ativo</span>
+                            <?php endif; ?>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($total_usuarios, 0, ',', '.') ?></h3>
+                        <p class="text-white/50 text-sm">Usuários Cadastrados</p>
                     </div>
                     
-                    <!-- Botão Ver Todas -->
-                    <div class="mt-6 text-center">
-                        <a href="mensagens.php" class="inline-flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-white/70 font-medium hover:bg-[#C71A1D]/10 hover:border-[#C71A1D]/50 hover:text-white transition-all duration-300">
-                            <span>Ver todas as mensagens</span>
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <!-- Card 2: Mensagens Enviadas -->
+                    <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
+                                <i data-lucide="message-square" class="w-6 h-6 text-purple-400"></i>
+                            </div>
+                            <?php if ($total_mensagens > 0): ?>
+                                <span class="text-green-400 text-sm font-medium">Ativo</span>
+                            <?php endif; ?>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($total_mensagens, 0, ',', '.') ?></h3>
+                        <p class="text-white/50 text-sm">Mensagens Enviadas</p>
+                    </div>
+                    
+                    <!-- Card 3: Automações Ativas -->
+                    <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-[#C71A1D]/10 rounded-xl flex items-center justify-center">
+                                <i data-lucide="workflow" class="w-6 h-6 text-[#C71A1D]"></i>
+                            </div>
+                            <?php if ($total_automacoes > 0): ?>
+                                <span class="text-green-400 text-sm font-medium">Ativo</span>
+                            <?php endif; ?>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($total_automacoes, 0, ',', '.') ?></h3>
+                        <p class="text-white/50 text-sm">Automações Ativas</p>
+                    </div>
+                    
+                    <!-- Card 4: Taxa de Sucesso -->
+                    <div class="glass border border-white/10 rounded-2xl p-6 hover:border-[#C71A1D]/30 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                            <?php if ($taxa_sucesso >= 90): ?>
+                                <span class="text-green-400 text-sm font-medium">Excelente</span>
+                            <?php elseif ($taxa_sucesso >= 70): ?>
+                                <span class="text-yellow-400 text-sm font-medium">Bom</span>
+                            <?php endif; ?>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-1"><?= number_format($taxa_sucesso, 1, ',', '.') ?>%</h3>
+                        <p class="text-white/50 text-sm">Taxa de Entrega</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portal: n8n -->
+            <div id="content-n8n" class="hidden">
+                <div class="max-w-3xl mx-auto py-20">
+                    <div class="glass border border-red-600/30 rounded-3xl p-12 text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-red-600 to-red-800 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-red-600/50">
+                            <i data-lucide="network" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-white mb-4">n8n Automation</h2>
+                        <p class="text-white/60 text-lg mb-8">Plataforma de automação visual para conectar serviços e criar workflows poderosos</p>
+                        <a 
+                            href="https://n8n.infinityflowapp.com" 
+                            target="_blank"
+                            class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#C71A1D] via-red-600 to-[#ff4444] rounded-xl font-bold text-white text-lg shadow-xl hover:shadow-[0_0_50px_rgba(199,26,29,0.6)] hover:-translate-y-1 transition-all duration-300"
+                        >
+                            <span>Acessar n8n Automation</span>
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
                         </a>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
+            
+            <!-- Portal: Easypanel -->
+            <div id="content-easypanel" class="hidden">
+                <div class="max-w-3xl mx-auto py-20">
+                    <div class="glass border border-red-600/30 rounded-3xl p-12 text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-red-600 to-red-800 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-red-600/50">
+                            <i data-lucide="server" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-white mb-4">Easypanel</h2>
+                        <p class="text-white/60 text-lg mb-8">Painel de controle para gerenciar servidores, aplicações e infraestrutura cloud</p>
+                        <a 
+                            href="https://admin.infinityflowapp.com" 
+                            target="_blank"
+                            class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#C71A1D] via-red-600 to-[#ff4444] rounded-xl font-bold text-white text-lg shadow-xl hover:shadow-[0_0_50px_rgba(199,26,29,0.6)] hover:-translate-y-1 transition-all duration-300"
+                        >
+                            <span>Acessar Easypanel</span>
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portal: Minio -->
+            <div id="content-minio" class="hidden">
+                <div class="max-w-3xl mx-auto py-20">
+                    <div class="glass border border-red-600/30 rounded-3xl p-12 text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-red-600 to-red-800 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-red-600/50">
+                            <i data-lucide="hard-drive" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-white mb-4">Minio Storage</h2>
+                        <p class="text-white/60 text-lg mb-8">Armazenamento de objetos de alto desempenho compatível com Amazon S3</p>
+                        <a 
+                            href="https://minio.infinityflowapp.com" 
+                            target="_blank"
+                            class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#C71A1D] via-red-600 to-[#ff4444] rounded-xl font-bold text-white text-lg shadow-xl hover:shadow-[0_0_50px_rgba(199,26,29,0.6)] hover:-translate-y-1 transition-all duration-300"
+                        >
+                            <span>Acessar Minio Storage</span>
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portal: Evolution API -->
+            <div id="content-evolution" class="hidden">
+                <div class="max-w-3xl mx-auto py-20">
+                    <div class="glass border border-red-600/30 rounded-3xl p-12 text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-red-600 to-red-800 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-red-600/50">
+                            <i data-lucide="smartphone" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-white mb-4">Evolution API</h2>
+                        <p class="text-white/60 text-lg mb-8">API completa para integração WhatsApp com gerenciamento de instâncias e mensagens</p>
+                        <a 
+                            href="https://api.infinityflowapp.com/manager" 
+                            target="_blank"
+                            class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#C71A1D] via-red-600 to-[#ff4444] rounded-xl font-bold text-white text-lg shadow-xl hover:shadow-[0_0_50px_rgba(199,26,29,0.6)] hover:-translate-y-1 transition-all duration-300"
+                        >
+                            <span>Acessar Evolution API</span>
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portal: InfinityFlow Site -->
+            <div id="content-site" class="hidden">
+                <div class="max-w-3xl mx-auto py-20">
+                    <div class="glass border border-red-600/30 rounded-3xl p-12 text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-red-600 to-red-800 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-red-600/50">
+                            <i data-lucide="globe" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-white mb-4">InfinityFlow Site</h2>
+                        <p class="text-white/60 text-lg mb-8">Acesse o site institucional da InfinityFlow e conheça nossos serviços</p>
+                        <a 
+                            href="https://infinityflowapp.com" 
+                            target="_blank"
+                            class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#C71A1D] via-red-600 to-[#ff4444] rounded-xl font-bold text-white text-lg shadow-xl hover:shadow-[0_0_50px_rgba(199,26,29,0.6)] hover:-translate-y-1 transition-all duration-300"
+                        >
+                            <span>Acessar InfinityFlow Site</span>
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
         </main>
     </div>
+    
+    <!-- Portal Switching Script -->
+    <script>
+        // Portal switching function
+        function showPortal(portalName) {
+            // Hide all content sections
+            const allContents = document.querySelectorAll('[id^="content-"]');
+            allContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected content
+            const selectedContent = document.getElementById('content-' + portalName);
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
+            }
+            
+            // Update navigation active state
+            const allLinks = document.querySelectorAll('[id^="link-"]');
+            allLinks.forEach(link => {
+                link.classList.remove('bg-[#C71A1D]/10', 'border-[#C71A1D]', 'text-white');
+                link.classList.add('text-white/60', 'border-transparent');
+            });
+            
+            const selectedLink = document.getElementById('link-' + portalName);
+            if (selectedLink) {
+                selectedLink.classList.remove('text-white/60', 'border-transparent');
+                selectedLink.classList.add('bg-[#C71A1D]/10', 'border-[#C71A1D]', 'text-white');
+            }
+            
+            // Reinitialize Lucide icons for new content
+            lucide.createIcons();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            showPortal('dashboard');
+        });
+    </script>
     
     <!-- Initialize Lucide Icons -->
     <script>
