@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Conectar ao banco
         require_once __DIR__ . '/../config/db.php';
         
-        // Capturar e sanitizar dados
-        $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
+        // Capturar e sanitizar dados (PHP 8.1+ compatível)
+        $username = isset($_POST['username']) ? trim(htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8')) : '';
         $password = $_POST['password'] ?? '';
-        $chave_acesso = trim($_POST['chave_acesso'] ?? '');
+        $chave_acesso = isset($_POST['chave_acesso']) ? trim($_POST['chave_acesso']) : '';
         
         // VALIDAÇÃO 1: Campos obrigatórios
         if (empty($username) || empty($password) || empty($chave_acesso)) {
