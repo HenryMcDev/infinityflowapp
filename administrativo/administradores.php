@@ -19,7 +19,7 @@ require_once __DIR__ . '/../config/db.php';
 require_login();
 
 // Obter informações do usuário logado
-$current_user = get_current_user();
+$current_user = get_logged_user();
 $is_ceo_user = is_ceo();
 
 // Buscar todos os administradores

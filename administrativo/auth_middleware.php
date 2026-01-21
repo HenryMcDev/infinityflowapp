@@ -175,7 +175,7 @@ function get_user_nivel() {
  * 
  * @return array
  */
-function get_current_user() {
+function get_logged_user() {
     return [
         'id' => $_SESSION['user_id'] ?? null,
         'username' => $_SESSION['username'] ?? null,
@@ -184,3 +184,4 @@ function get_current_user() {
     ];
 }
 ?>
+
