@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
+                $_SESSION['nivel'] = $user['nivel'] ?? 'Admin'; // Armazena nível de permissão
                 
                 // Atualizar last_login no banco de dados
                 $updateStmt = $pdo->prepare("UPDATE usuarios_admin SET last_login = NOW() WHERE id = ?");

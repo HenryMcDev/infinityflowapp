@@ -30,23 +30,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = isset($_POST['username']) ? trim(htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8')) : '';
         $password = $_POST['password'] ?? '';
         $chave_acesso = isset($_POST['chave_acesso']) ? trim($_POST['chave_acesso']) : '';
+        $nivel = isset($_POST['nivel']) ? trim($_POST['nivel']) : 'Admin';
         
         // VALIDAÇÃO 1: Campos obrigatórios
-        if (empty($username) || empty($password) || empty($chave_acesso)) {
+        if (empty($username) || empty($password) || empty($chave_acesso) || empty($nivel)) {
             throw new Exception('Todos os campos são obrigatórios.');
         }
         
-        // VALIDAÇÃO 2: Chave de Acesso Secreta
-        if ($chave_acesso !== 'frango') {
+        // VALIDAÇÃO 2: Nível válido
+        if (!in_array($nivel, ['CEO', 'Admin'], true)) {
+            throw new Exception('Nível de permissão inválido.');
+        }
+        
+        // VALIDAÇÃO 3: Chave de Acesso Dinâmica (buscar do banco)
+        $keyStmt = $pdo->prepare("SELECT valor FROM configuracoes WHERE chave_nome = 'chave_cadastro' LIMIT 1");
+        $keyStmt->execute();
+        $chave_valida = $keyStmt->fetchColumn();
+        
+        if (!$chave_valida || $chave_acesso !== $chave_valida) {
             throw new Exception('Chave de Acesso Inválida');
         }
         
-        // VALIDAÇÃO 3: Tamanho mínimo de senha
+        // VALIDAÇÃO 4: Tamanho mínimo de senha
         if (strlen($password) < 6) {
             throw new Exception('A senha deve ter no mínimo 6 caracteres.');
         }
         
-        // VALIDAÇÃO 4: Verificar duplicidade de usuário
+        // VALIDAÇÃO 5: Verificar duplicidade de usuário
         $checkSQL = "SELECT COUNT(*) as total FROM usuarios_admin WHERE username = :username";
         $stmt = $pdo->prepare($checkSQL);
         $stmt->execute(['username' => $username]);
@@ -61,15 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // INSERIR: Novo administrador no banco
         $insertSQL = "
-            INSERT INTO usuarios_admin (username, password_hash, email, created_at, is_active) 
-            VALUES (:username, :password_hash, :email, NOW(), 1)
+            INSERT INTO usuarios_admin (username, password_hash, email, nivel, created_at, is_active) 
+            VALUES (:username, :password_hash, :email, :nivel, NOW(), 1)
         ";
         
         $stmt = $pdo->prepare($insertSQL);
         $stmt->execute([
             'username' => $username,
             'password_hash' => $passwordHash,
-            'email' => $username . '@infinityflow.local' // Email fictício
+            'email' => $username . '@infinityflow.local', // Email fictício
+            'nivel' => $nivel
         ]);
         
         // SUCESSO: Definir mensagem de sessão e redirecionar
@@ -182,6 +193,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     minlength="6"
                     class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#C71A1D] focus:ring-2 focus:ring-[#C71A1D]/50 focus:shadow-[0_0_25px_rgba(199,26,29,0.3)] transition-all duration-300"
                 >
+            </div>
+            
+            <!-- Campo: Nível de Permissão -->
+            <div class="space-y-2">
+                <label for="nivel" class="block text-sm font-medium text-white/70 tracking-wide">
+                    <i data-lucide="shield" class="w-4 h-4 inline-block mr-1"></i>
+                    Nível de Permissão
+                </label>
+                <select 
+                    id="nivel" 
+                    name="nivel" 
+                    required
+                    class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#C71A1D] focus:ring-2 focus:ring-[#C71A1D]/50 focus:shadow-[0_0_25px_rgba(199,26,29,0.3)] transition-all duration-300"
+                >
+                    <option value="" class="bg-gray-900">Selecione o nível</option>
+                    <option value="CEO" class="bg-gray-900">🔴 CEO (Acesso Total)</option>
+                    <option value="Admin" class="bg-gray-900" selected>🔵 Admin (Operacional)</option>
+                </select>
+                <p class="text-xs text-white/40 mt-1">
+                    <i data-lucide="info" class="w-3 h-3 inline-block"></i>
+                    CEO possui acesso total, Admin tem restrições
+                </p>
             </div>
             
             <!-- Campo: Chave de Acesso -->

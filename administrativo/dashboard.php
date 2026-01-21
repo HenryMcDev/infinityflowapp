@@ -126,12 +126,19 @@ try {
                     <div class="w-10 h-10 bg-gradient-to-br from-[#C71A1D] to-red-600 rounded-full flex items-center justify-center">
                         <i data-lucide="user" class="w-5 h-5 text-white"></i>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <p class="text-white font-medium text-sm"><?= htmlspecialchars($username) ?></p>
                         <?php if ($email): ?>
                             <p class="text-white/40 text-xs"><?= htmlspecialchars($email) ?></p>
                         <?php endif; ?>
                     </div>
+                    <?php
+                    $nivel = $_SESSION['nivel'] ?? 'Admin';
+                    $is_ceo = ($nivel === 'CEO');
+                    ?>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-semibold <?= $is_ceo ? 'bg-red-600/20 text-red-400 border border-red-600/50' : 'bg-blue-600/20 text-blue-400 border border-blue-600/50' ?>">
+                        <?= $is_ceo ? '🔴 CEO' : '🔵 Admin' ?>
+                    </span>
                 </div>
             </div>
             
