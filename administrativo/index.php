@@ -1,15 +1,71 @@
 <?php
 /**
  * InfinityFlow - Administrative Area
- * This page is protected and requires authentication
+ * Server-side login processing with direct database authentication
  */
 
-// Include authentication configuration
-require_once __DIR__ . '/../config/auth.php';
+// Iniciar sessão (DEVE ser a primeira coisa no arquivo)
+session_start();
 
-// Check if user is authenticated
-// Note: We keep the login form in this page for a better UX
-// but you could also redirect to a separate login page if preferred
+// Incluir configuração do banco de dados (acessa variável global $pdo)
+require_once __DIR__ . '/../config/db.php';
+
+// Variável para armazenar mensagens de erro
+$error_message = null;
+$success_message = null;
+
+// Processar formulário de login (POST)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'])) {
+    try {
+        // Sanitizar entrada do usuário
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+        $password = $_POST['password'] ?? '';
+        
+        // Validação básica
+        if (empty($username) || empty($password)) {
+            $error_message = "Por favor, preencha todos os campos";
+        } else {
+            // Query preparada usando a variável global $pdo
+            $stmt = $pdo->prepare("SELECT * FROM usuarios_admin WHERE username = ? AND is_active = 1 LIMIT 1");
+            $stmt->execute([$username]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Verificar se o usuário existe e a senha está correta
+            if ($user && password_verify($password, $user['password_hash'])) {
+                // Login bem-sucedido - criar sessão
+                $_SESSION['logged_in'] = true;
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['email'] = $user['email'];
+                
+                // Atualizar last_login no banco de dados
+                $updateStmt = $pdo->prepare("UPDATE usuarios_admin SET last_login = NOW() WHERE id = ?");
+                $updateStmt->execute([$user['id']]);
+                
+                // Redirecionar para o dashboard
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                // Credenciais inválidas
+                $error_message = "Usuário ou senha inválidos";
+            }
+        }
+    } catch (PDOException $e) {
+        // Erro de banco de dados - logar e exibir mensagem genérica
+        error_log('[InfinityFlow Login] Erro PDO: ' . $e->getMessage());
+        $error_message = "Erro ao processar login. Tente novamente.";
+    } catch (Exception $e) {
+        // Outros erros
+        error_log('[InfinityFlow Login] Erro: ' . $e->getMessage());
+        $error_message = "Erro ao processar login. Tente novamente.";
+    }
+}
+
+// Exibir mensagem de sucesso após cadastro (se existir na sessão)
+if (isset($_SESSION['cadastro_sucesso'])) {
+    $success_message = $_SESSION['cadastro_sucesso'];
+    unset($_SESSION['cadastro_sucesso']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -63,20 +119,25 @@ require_once __DIR__ . '/../config/auth.php';
             </div>
             
             <!-- Login Form -->
-            <form id="loginForm" class="space-y-6">
+            <form method="POST" action="" class="space-y-6">
                 
-                <?php
-                // Exibir mensagem de sucesso após cadastro
-                if (isset($_SESSION['cadastro_sucesso'])) {
-                    echo '<div class="mb-6 p-4 bg-green-600/20 border border-green-600/50 rounded-xl">';
-                    echo '<div class="flex items-center gap-3">';
-                    echo '<i data-lucide="check-circle" class="w-5 h-5 text-green-400 flex-shrink-0"></i>';
-                    echo '<p class="text-green-300 text-sm font-medium">' . htmlspecialchars($_SESSION['cadastro_sucesso']) . '</p>';
-                    echo '</div>';
-                    echo '</div>';
-                    unset($_SESSION['cadastro_sucesso']);
-                }
-                ?>
+                <?php if ($success_message): ?>
+                    <div class="mb-6 p-4 bg-green-600/20 border border-green-600/50 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-400 flex-shrink-0"></i>
+                            <p class="text-green-300 text-sm font-medium"><?= htmlspecialchars($success_message) ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ($error_message): ?>
+                    <div class="mb-6 p-4 bg-red-600/20 border border-red-600/50 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
+                            <p class="text-red-300 text-sm font-medium"><?= htmlspecialchars($error_message) ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 
                 <div class="space-y-2">
                     <label for="username" class="block text-sm font-medium text-white/70 tracking-wide">Usuário</label>
@@ -86,6 +147,7 @@ require_once __DIR__ . '/../config/auth.php';
                         name="username" 
                         placeholder="Digite seu usuário"
                         required
+                        value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '' ?>"
                         class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#C71A1D] focus:ring-2 focus:ring-[#C71A1D]/50 focus:shadow-[0_0_25px_rgba(199,26,29,0.3)] transition-all duration-300"
                     >
                 </div>
@@ -105,8 +167,6 @@ require_once __DIR__ . '/../config/auth.php';
                 <button type="submit" class="w-full mt-8 px-6 py-4 bg-gradient-to-r from-[#C71A1D] via-red-600 to-[#ff4444] rounded-xl font-semibold text-white shadow-lg hover:shadow-[0_0_40px_rgba(199,26,29,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
                     Entrar
                 </button>
-                
-                <div id="errorMessage" class="text-[#C71A1D] text-sm text-center min-h-5 font-medium"></div>
             </form>
             
             <!-- Link para Cadastro de Novo Administrador -->
@@ -120,81 +180,6 @@ require_once __DIR__ . '/../config/auth.php';
             </div>
         </div>
     </div>
-
-    <!-- Dashboard View -->
-    <div id="dashboardView" class="hidden min-h-screen flex">
-        <!-- Sidebar -->
-        <aside class="w-80 glass-strong border-r border-white/10 flex flex-col fixed h-screen left-0 top-0 z-50 slide-in-left">
-            <!-- Sidebar Header -->
-            <div class="p-8 border-b border-white/10">
-                <div class="flex items-center gap-4">
-                    <img src="./images/logo.png" alt="InfinityFlow Logo" class="w-14 h-14 glow-pulse">
-                    <div>
-                        <h2 class="text-xl font-bold tracking-tight bg-gradient-to-r from-[#C71A1D] via-red-500 to-[#ff4444] bg-clip-text text-transparent">
-                            InfinityFlow
-                        </h2>
-                        <p class="text-white/40 text-xs tracking-wide">Admin Panel</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Navigation Menu -->
-            <nav class="flex-1 py-8 px-4 overflow-y-auto">
-                <div class="space-y-2">
-                    <a href="#" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 hover:shadow-[0_0_20px_rgba(199,26,29,0.1)] border-l-2 border-transparent hover:border-[#C71A1D]" data-service="easypanel">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110"></i>
-                        <span class="font-medium tracking-wide">Easypanel</span>
-                    </a>
-                    
-                    <a href="#" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 hover:shadow-[0_0_20px_rgba(199,26,29,0.1)] border-l-2 border-transparent hover:border-[#C71A1D]" data-service="n8n">
-                        <i data-lucide="workflow" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110"></i>
-                        <span class="font-medium tracking-wide">n8n</span>
-                    </a>
-                    
-                    <a href="#" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 hover:shadow-[0_0_20px_rgba(199,26,29,0.1)] border-l-2 border-transparent hover:border-[#C71A1D]" data-service="evolution">
-                        <i data-lucide="message-square" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110"></i>
-                        <span class="font-medium tracking-wide">Evolution API</span>
-                    </a>
-                    
-                    <a href="#" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 hover:shadow-[0_0_20px_rgba(199,26,29,0.1)] border-l-2 border-transparent hover:border-[#C71A1D]" data-service="minio">
-                        <i data-lucide="database" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110"></i>
-                        <span class="font-medium tracking-wide">Minio</span>
-                    </a>
-                    
-                    <a href="#" class="nav-item group flex items-center gap-4 px-5 py-4 text-white/60 rounded-xl transition-all duration-300 hover:text-white hover:bg-[#C71A1D]/10 hover:shadow-[0_0_20px_rgba(199,26,29,0.1)] border-l-2 border-transparent hover:border-[#C71A1D]" data-service="site">
-                        <i data-lucide="globe" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110"></i>
-                        <span class="font-medium tracking-wide">Site InfinityFlow</span>
-                    </a>
-                </div>
-            </nav>
-            
-            <!-- Sidebar Footer -->
-            <div class="p-6 border-t border-white/10">
-                <button id="logoutBtn" class="group w-full flex items-center gap-3 px-5 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white/60 font-medium tracking-wide transition-all duration-300 hover:bg-[#C71A1D]/10 hover:border-[#C71A1D]/50 hover:text-white hover:shadow-[0_0_20px_rgba(199,26,29,0.2)]">
-                    <i data-lucide="log-out" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110"></i>
-                    <span>Sair</span>
-                </button>
-            </div>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="flex-1 ml-80 bg-black min-h-screen">
-            <div id="contentArea" class="p-12 fade-in-up">
-                <!-- Welcome Message -->
-                <div class="text-center py-20">
-                    <h1 class="text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent">
-                        Bem-vindo ao InfinityFlow
-                    </h1>
-                    <p class="text-xl text-white/50 font-light tracking-wide">
-                        Selecione um serviço no menu lateral para começar
-                    </p>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Custom JavaScript -->
-    <script src="./js/scripts.js"></script>
     
     <!-- Initialize Lucide Icons -->
     <script>
