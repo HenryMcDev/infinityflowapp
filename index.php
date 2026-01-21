@@ -1,69 +1,16 @@
 <?php
-
-// Redirecionamento de non-www para www
-if ($_SERVER['HTTP_HOST'] === 'infinityflowapp.com') {
-    header("Location: https://www.infinityflowapp.com" . $_SERVER['REQUEST_URI'], true, 301);
-    exit;
-}
 /**
- * InfinityFlow - Landing Page (Versão Híbrida com n8n)
- * ===================================================
+ * InfinityFlow - Landing Page
+ * ============================
+ * Clean HTML5 structure with modular PHP processing
  */
 
-// 1. BLOCO DE PROCESSAMENTO (O "Pai" da Automação)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Coleta e limpeza dos dados
-    $nome = htmlspecialchars(trim($_POST['nome'] ?? ''));
-    $cidade = htmlspecialchars(trim($_POST['cidade'] ?? ''));
-    $uf = htmlspecialchars(trim($_POST['uf'] ?? ''));
-    $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
-    $whatsapp = htmlspecialchars(trim($_POST['whatsapp'] ?? ''));
-    $volume_mensagens = htmlspecialchars(trim($_POST['volume_mensagens'] ?? ''));
-    $descricao = htmlspecialchars(trim($_POST['descricao'] ?? ''));
-    $data_visita = htmlspecialchars(trim($_POST['data_visita'] ?? ''));
+// Iniciar sessão para verificar status de admin
+session_start();
 
-    // URL DO SEU WEBHOOK N8N
-    $webhook_url = 'https://n8n.infinityflowapp.com/webhook/infinityflowapp-website';
-
-    // Prepara o pacote de dados para o n8n
-    $payload = json_encode([
-        'nome' => $nome,
-        'cidade' => $cidade,
-        'uf' => $uf,
-        'email' => $email,
-        'whatsapp' => $whatsapp,
-        'volume_mensagens' => $volume_mensagens,
-        'descricao' => $descricao,
-        'data_visita' => $data_visita,
-        'origem' => 'Site Oficial InfinityFlow'
-    ]);
-
-    // Envia os dados para o n8n via cURL
-    $ch = curl_init($webhook_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    
-    $result = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-        header('Content-Type: application/json');
-        if ($http_code >= 200 && $http_code < 300) {
-            echo json_encode(['success' => true]);
-        } else {
-           echo json_encode(['success' => false, 'error' => 'Erro no servidor de automação.']);
-        }
-        exit;
-    }
-}
+require_once 'assets/php/process-form.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark scroll-smooth">
 <head>
@@ -76,44 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>InfinityFlow | Automação Inteligente de Atendimento</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="Imagens/Logo1.png">
-    <link rel="shortcut icon" type="image/png" href="Imagens/Logo1.png">
+    <link rel="icon" type="image/png" href="Imagens/Logo.png">
+    <link rel="shortcut icon" type="image/png" href="Imagens/Logo.png">
     
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
     
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            200: '#fecaca',
-                            300: '#fca5a5',
-                            400: '#f87171',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            800: '#991b1b',
-                            900: '#7f1d1d',
-                        },
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-black text-white antialiased">
 
@@ -122,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex items-center justify-between h-20">
                 <div class="flex items-center space-x-2">
                     <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center animate-pulse-glow p-1.5">
-                        <img src="Imagens/Logo1.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
+                        <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                     </div>
                     <span class="text-2xl font-bold gradient-text">InfinityFlow</span>
                 </div>
@@ -141,6 +70,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Consultoria Gratuita
                 </a>
                 
+                <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+                <a href="administrativo/index.php" class="hidden md:block btn-admin px-5 py-3 rounded-full font-semibold text-white">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    Administração
+                </a>
+                <?php endif; ?>
+                
                 <button id="mobile-menu-btn" class="md:hidden text-white">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
@@ -156,6 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="#benefits" class="block py-2 hover:text-red-500 transition-colors">Diferenciais</a>
                 <a href="#faq" class="block py-2 hover:text-red-500 transition-colors">FAQ</a>
                 <a href="#contact" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold">Consultoria Gratuita</a>
+                
+                <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+                <a href="administrativo/index.php" class="btn-admin block text-center px-6 py-3 rounded-full font-semibold">
+                    <i data-lucide="settings" class="w-4 h-4 inline-block"></i>
+                    Administração
+                </a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -759,7 +702,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
                         <div class="w-8 h-8 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center p-1">
-                            <img src="Imagens/Logo1.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
+                            <img src="Imagens/Logo.png" alt="InfinityFlow Logo" class="w-full h-full object-contain">
                         </div>
                         <span class="text-xl font-bold gradient-text">InfinityFlow</span>
                     </div>
@@ -805,65 +748,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="text-center text-gray-500 text-sm border-t border-gray-800 pt-8">
                 <p>&copy; 2026 InfinityFlow. Sua comunicação, sem limites.</p>
+                <?php if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
+                <p class="mt-2">
+                    <a href="administrativo/index.php" class="text-gray-600 hover:text-red-500 transition-colors text-xs">
+                        Área Administrativa
+                    </a>
+                </p>
+                <?php endif; ?>
+            </div>
             </div>
         </div>
     </footer>
 
-    <a href="https://wpp.infinityflowapp.com/5534988780557?text=Olá! Vim pelo site e gostaria de um orçamento para automação." 
+    <!-- WhatsApp Floating Button -->
+    <a href="https://app.infinityflowapp.com/5534988780557?text=Olá! Vim pelo site e gostaria de um orçamento para automação." 
        target="_blank" 
        class="whatsapp-float"
        aria-label="Entre em contato pelo WhatsApp">
-        <i data-lucide="message-circle" class="w-7 h-7"></i>
+        <img src="Imagens/logo_whatsapp.png" alt="WhatsApp" class="w-full h-full object-contain">
     </a>
 
-    <script>
-        lucide.createIcons();
-        AOS.init({ duration: 800, once: true, offset: 100 });
-        
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
-        
-        function toggleAccordion(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i[data-lucide="chevron-down"]');
-            content.classList.toggle('active');
-            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
-
-        const form = document.getElementById('infinityForm');
-        const btn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
-
-        if (form && btn && btnText) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                btn.disabled = true;
-                btnText.innerText = "Processando informações...";
-                
-                const formData = new FormData(form);
-                try {
-                    const response = await fetch('index.php', {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                    });
-                    const result = await response.json();
-                    if (result.success) {
-                        alert('🚀 Dados enviados! O Flow já está processando sua solicitação. Entraremos em contato em breve.');
-                        form.reset();
-                    } else {
-                        alert('❌ Erro ao entrar em contato com o Flow. Por favor, tente pelo botão do WhatsApp.');
-                    }
-                } catch (error) {
-                    alert('⚠️ Erro de conexão. Verifique se sua internet está ativa ou use o suporte via WhatsApp.');
-                } finally {
-                    btn.disabled = false;
-                    btnText.innerText = "Enviar para Análise do Flow";
-                }
-            });
-        }
-    </script>
+    <!-- Custom JavaScript -->
+    <script src="assets/js/scripts.js"></script>
 </body>
 </html>
-

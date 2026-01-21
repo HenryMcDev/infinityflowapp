@@ -1,0 +1,101 @@
+/* ============================================
+   InfinityFlow - Administrative Area Styles
+   Ultra-Premium Design with Tailwind CSS
+   ============================================ */
+
+/* Note: When using Tailwind via CDN, @tailwind directives are not needed.
+   The CDN automatically includes all base, components, and utilities. */
+
+/* ============================================
+   Custom Animations
+   ============================================ */
+
+@keyframes glow-pulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px rgba(199, 26, 29, 0.5));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 20px rgba(199, 26, 29, 0.8));
+    }
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+}
+
+.slide-in-left {
+    animation: slide-in-left 0.5s ease-out;
+}
+
+.text-shadow-glow {
+    text-shadow: 0 0 20px rgba(199, 26, 29, 0.5);
+}
+
+.glass {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-strong {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset !important;
+    -webkit-text-fill-color: white !important;
+}
