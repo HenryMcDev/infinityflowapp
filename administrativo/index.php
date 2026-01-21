@@ -64,6 +64,20 @@ require_once __DIR__ . '/../config/auth.php';
             
             <!-- Login Form -->
             <form id="loginForm" class="space-y-6">
+                
+                <?php
+                // Exibir mensagem de sucesso após cadastro
+                if (isset($_SESSION['cadastro_sucesso'])) {
+                    echo '<div class="mb-6 p-4 bg-green-600/20 border border-green-600/50 rounded-xl">';
+                    echo '<div class="flex items-center gap-3">';
+                    echo '<i data-lucide="check-circle" class="w-5 h-5 text-green-400 flex-shrink-0"></i>';
+                    echo '<p class="text-green-300 text-sm font-medium">' . htmlspecialchars($_SESSION['cadastro_sucesso']) . '</p>';
+                    echo '</div>';
+                    echo '</div>';
+                    unset($_SESSION['cadastro_sucesso']);
+                }
+                ?>
+                
                 <div class="space-y-2">
                     <label for="username" class="block text-sm font-medium text-white/70 tracking-wide">Usuário</label>
                     <input 
@@ -94,6 +108,16 @@ require_once __DIR__ . '/../config/auth.php';
                 
                 <div id="errorMessage" class="text-[#C71A1D] text-sm text-center min-h-5 font-medium"></div>
             </form>
+            
+            <!-- Link para Cadastro de Novo Administrador -->
+            <div class="mt-8 text-center">
+                <div class="border-t border-white/10 pt-6">
+                    <a href="cadastro_admin.php" class="inline-flex items-center gap-2 text-sm text-white/60 hover:text-red-400 transition-colors duration-300 group">
+                        <i data-lucide="user-plus" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                        Novo Administrador
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 

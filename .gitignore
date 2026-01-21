@@ -1,0 +1,50 @@
+# InfinityFlow - Git Ignore
+# ==========================
+
+# Scripts de Setup (Não versionar)
+administrativo/setup_admin.php
+setup_admin.php
+test_db_connection.php
+
+# Arquivos de Configuração Sensíveis
+config/db.php
+config/auth.php
+.env
+
+# Logs
+*.log
+error_log
+php_error_log
+
+# IDEs e Editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporários
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Node Modules (se houver)
+node_modules/
+package-lock.json
+
+# Composer (se houver)
+vendor/
+composer.lock
+
+# Backups
+backup/
+*.zip
+*.rar
+*.sql
+InfinityStore backup.rar
