@@ -21,18 +21,44 @@ define('AUTH_USERNAME', 'admin');
 define('AUTH_PASSWORD_HASH', '$2y$10$.3caFvUrkz2TRObuSOye3OwkiIJS8wEAf6bA/JXo9re1aIctzYW7q');
 
 /**
- * Verify login credentials
+ * Verify login credentials against database
  * 
  * @param string $username Username to verify
  * @param string $password Password to verify
  * @return bool True if credentials are valid, false otherwise
  */
 function verifyCredentials($username, $password) {
-    if ($username !== AUTH_USERNAME) {
+    try {
+        // Incluir conexão com banco de dados
+        require_once __DIR__ . '/db.php';
+        
+        // Buscar usuário no banco de dados
+        $sql = "SELECT password_hash, is_active FROM usuarios_admin WHERE username = :username LIMIT 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Verificar se usuário existe e está ativo
+        if (!$user || $user['is_active'] != 1) {
+            return false;
+        }
+        
+        // Verificar senha usando password_verify
+        if (password_verify($password, $user['password_hash'])) {
+            // Atualizar último login
+            $updateSQL = "UPDATE usuarios_admin SET last_login = NOW() WHERE username = :username";
+            $stmtUpdate = $pdo->prepare($updateSQL);
+            $stmtUpdate->execute(['username' => $username]);
+            
+            return true;
+        }
+        
+        return false;
+        
+    } catch (PDOException $e) {
+        error_log('[InfinityFlow Auth] Erro na autenticação: ' . $e->getMessage());
         return false;
     }
-    
-    return password_verify($password, AUTH_PASSWORD_HASH);
 }
 
 /**
