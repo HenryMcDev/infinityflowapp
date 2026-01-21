@@ -6,8 +6,8 @@
  * Returns JSON response for AJAX handling
  */
 
-// Include authentication configuration
-require_once __DIR__ . '/../../config/auth.php';
+// Start session before any output
+session_start();
 
 // Set JSON content type
 header('Content-Type: application/json');
@@ -44,21 +44,37 @@ if (empty($data['username']) || empty($data['password'])) {
 $username = trim($data['username']);
 $password = $data['password'];
 
-// Verify credentials
-if (verifyCredentials($username, $password)) {
-    // Login successful
-    loginUser($username);
+try {
+    // Include authentication configuration
+    require_once __DIR__ . '/../../config/auth.php';
     
-    echo json_encode([
-        'success' => true,
-        'message' => 'Login realizado com sucesso',
-        'redirect' => '/InfinityStore/administrativo/'
-    ]);
-} else {
-    // Login failed
-    http_response_code(401);
+    // Verify credentials
+    if (verifyCredentials($username, $password)) {
+        // Login successful
+        loginUser($username);
+        
+        echo json_encode([
+            'success' => true,
+            'message' => 'Login realizado com sucesso',
+            'redirect' => '/InfinityStore/administrativo/'
+        ]);
+    } else {
+        // Login failed
+        http_response_code(401);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Usuário ou senha inválidos'
+        ]);
+    }
+    
+} catch (Exception $e) {
+    // Log error for debugging
+    error_log('[InfinityFlow Login] Erro: ' . $e->getMessage());
+    
+    // Return generic error to user
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'Usuário ou senha inválidos'
+        'message' => 'Erro ao processar login. Tente novamente.'
     ]);
 }
