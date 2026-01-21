@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_visita = htmlspecialchars(trim($_POST['data_visita'] ?? ''));
 
     // URL DO SEU WEBHOOK N8N
-    $webhook_url = 'https://n8n.infinityflowapp.com/webhook/infinityflowapp-website';
+    $webhook_url = 'https://n8n.infinityflowapp.com/webhook-test/infinityflowapp-website';
 
     // Prepara o pacote de dados para o n8n
     $payload = json_encode([
