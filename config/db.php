@@ -71,9 +71,13 @@ try {
         $e->getTraceAsString()
     ));
     
-    // PRODUÇÃO: Exibe mensagem genérica para o usuário final
+    // PRODUÇÃO: Define status HTTP 500 ANTES de qualquer output
+    if (!headers_sent()) {
+        http_response_code(500);
+    }
+    
+    // Exibe mensagem genérica para o usuário final
     // Não expõe detalhes técnicos por segurança
-    http_response_code(500);
     die('Erro ao conectar com o servidor');
 }
 
